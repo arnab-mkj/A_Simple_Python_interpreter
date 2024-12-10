@@ -1,4 +1,4 @@
-# Create Your Own Programming Language
+# Create Your Own Interpreter
 
 ## **Overview**
 
@@ -96,6 +96,66 @@ Prompts the user for input, processes it, and displays:
 - Errors with detailed information for invalid input.
 
 ---
+
+---
+
+## Episode 2: Parser Implementation
+
+In the second episode, we built the **Parser** to create an Abstract Syntax Tree (AST) from the tokens. The AST represents the structure and hierarchy of operations in the input expression.
+
+### Key Features Implemented:
+1. **Abstract Syntax Tree**:
+   - Constructs a tree to represent operations in the correct order of precedence.
+   - Example:
+     - Input: `1 + 2 * 3`
+     - Tree: `(TT_INT:1, PLUS, (TT_INT:2, MUL, TT_INT:3))`
+
+2. **Grammar Rules**:
+   - Defined grammar rules for our language in `grammar.txt`:
+     ```
+     expr   : term ((PLUS | MINUS) term)*
+     term   : factor ((MUL | DIV) factor)*
+     factor : (PLUS | MINUS) factor | INT | FLOAT | LPAREN expr RPAREN
+     ```
+     - `expr`: An expression is made of terms connected by `+` or `-`.
+     - `term`: A term is made of factors connected by `*` or `/`.
+     - `factor`: A factor can be a number, a unary operation (e.g., `-5`), or an expression in parentheses.
+
+3. **Unary Operations**:
+   - Added support for unary operators like `+` and `-`.
+   - Example: `-5` becomes `UnaryOpNode(-, TT_INT:5)`.
+
+4. **Parentheses Support**:
+   - Parentheses allow changing the order of operations.
+   - Example:
+     - Input: `(1 + 2) * 3`
+     - Tree: `((TT_INT:1, PLUS, TT_INT:2), MUL, TT_INT:3)`
+
+5. **Error Handling**:
+   - Added `InvalidSyntaxError` for syntax issues like missing parentheses or invalid tokens.
+
+### Example Inputs and Outputs:
+1. Input: `1 + 2 * 3`  
+   Output: `(TT_INT:1, PLUS, (TT_INT:2, MUL, TT_INT:3))`
+
+2. Input: `(1 + 2) * 3`  
+   Output: `((TT_INT:1, PLUS, TT_INT:2), MUL, TT_INT:3)`
+
+3. Input: `1 +`  
+   Error: `Invalid Syntax: Expected int or float`
+
+4. Input: `(1 + 2`  
+   Error: `Invalid Syntax: Expected ')'`
+
+---
+
+## What's Next?
+
+In Episode 3, we will create the **Interpreter** to traverse the AST and execute the operations. By the end of the next episode, we will see results for our expressions, such as:
+- Input: `1 + 2`
+- Output: `3`
+
+Stay tuned!
 
 ## **Usage**
 
